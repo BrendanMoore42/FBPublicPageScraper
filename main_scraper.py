@@ -6,12 +6,13 @@ date: October 17, 2018
 Requirements: Python 3.6+, Selenium, Numpy
 
 Retrieve Facebook comments with page ID's. ID's can be obtained
-from downloading page data via Facebook's analytic accounts.
+from downloading page data via Facebook's analytic accounts. In testing,
+user must be logged in to view comments ==> download comments.
 
 This method does not require token access and deploys through the
 mobile browser for static page views.
 
-*If using account to access and sign in:
+*Account access and signing in
 Credentials:
     Place in same folder cred.py with username, email and facebook id.
     Facebook ID is static and can be found on mobile version of public page:
@@ -36,6 +37,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
 #set FB parameters account file name
 fb_account = 'ACCOUNT NAME HERE'
 
+#set fid variable
 fid = facebook_id
 
 #set random sleep function to randomize link click time
@@ -51,6 +53,7 @@ def random_sleep(multiplier=1, verbose=False):
     if verbose:
         print(f'sleeping for {i} seconds')
     time.sleep(i)
+
 
 def main(args):
     """
@@ -81,31 +84,30 @@ def main(args):
     print('Preparing driver...\n')
     driver = webdriver.Chrome()
 
-    # #navigate to mobile facebook
-    # url = 'https://mobile.facebook.com'
-    # driver.get(url)
-    # random_sleep()
-    #
-    # #log in
-    # x = driver.find_element_by_id('m_login_email')
-    # x.send_keys(email)
-    # random_sleep()
-    #
-    # y = driver.find_element_by_id('m_login_password')
-    # y.send_keys(password)
-    # random_sleep()
-    #
-    # #login button
-    # z = driver.find_element_by_id('u_0_5')
-    # z.click()
-    # random_sleep()
-    #
-    # #click 'not now' button
-    # xpath = '//*[@id="root"]/div[1]/div/div/div[3]/div[1]/div/div/a'
-    # w = driver.find_element_by_xpath(xpath)
-    # w.click()
-    # random_sleep()
+    #log in to Facebook Mobile
+    url = 'https://mobile.facebook.com'
+    driver.get(url)
+    random_sleep()
 
+    # log in
+    x = driver.find_element_by_id('m_login_email')
+    x.send_keys(email)
+    random_sleep()
+
+    y = driver.find_element_by_id('m_login_password')
+    y.send_keys(password)
+    random_sleep()
+
+    # login button
+    z = driver.find_element_by_id('u_0_5')
+    z.click()
+    random_sleep()
+
+    # click 'not now' button
+    xpath = '//*[@id="root"]/div[1]/div/div/div[3]/div[1]/div/div/a'
+    w = driver.find_element_by_xpath(xpath)
+    w.click()
+    random_sleep()
 
     #loop through ID's to grab comments
     print('Starting:\n')
@@ -121,6 +123,7 @@ def main(args):
         #navigate to new url
         print('Get Url...')
         new_url = f'https://mobile.facebook.com/story.php?story_fbid={page}&id={fid}&anchor_composer=false'
+        print(new_url)
         driver.get(new_url)
         random_sleep(2)
 
@@ -190,6 +193,7 @@ def main(args):
         #add user comments to page data
         page_data['comments'] = user_list
 
+        print(page_data)
         #add page to list, loop back
         print('Page complete, sleeping...\n')
         page_data_list.append(page_data)
@@ -210,6 +214,7 @@ def main(args):
         pickle.dump(page_data_list, f)
         print('Pickle successful!')
 
+    #close driver to end web instance
     print('\n\nClosing driver...')
     driver.close()
 
