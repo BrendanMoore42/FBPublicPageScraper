@@ -1,3 +1,4 @@
 cred.py
 *.txt
-/__pycache__
+__pycache__/
+*.pyc
