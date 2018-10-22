@@ -1,3 +1,3 @@
 cred.py
-.gitignore
 *.txt
+__pycache__
