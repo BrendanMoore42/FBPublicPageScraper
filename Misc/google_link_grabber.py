@@ -6,33 +6,28 @@ requirements: Selenium, Pandas
 
 This script runs through a google search page and returns all
 of the links, dates and descriptions of the link. Only retrieves
-the first 100 terms. Enter search terms in script.
+the first 100 terms. Enter search terms.
 
-
-
+Returns json of data.
 """
-
-
-# import packages, credentials
-import re
-import sys
+# import packages
 import time
-import pickle
 import numpy as np
 import pandas as pd
-import urllib.request
-
 # import selenium webdriver and exceptions
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException, \
-    ElementNotVisibleException
 
 # disable chained warnings
 pd.options.mode.chained_assignment = None
 
-# store links
-blogs = []
+#terms to search
+terms = 'foo fighters'
+terms = terms.replace(' ', '+')
 
+url = f'https://www.google.ca/search?q={terms}&num=100'
+
+# store links
+links = []
 
 # set random sleep function to randomize link click time
 def random_sleep(multiplier=1, verbose=False):
@@ -51,8 +46,8 @@ def random_sleep(multiplier=1, verbose=False):
 
 def scrape(url):
     """
-    Opens google and searches for blogs with specified topic, scrolls through pages and
-    extracts html links for each blog. Outputs to a list.
+    Opens google and searches for links with specified search term.
+    Scrolls through pages and extracts html links for each blog.
 
     Async elements may differ but can be sourced from the browser inspector. Where the
     click is intended search for <class='element_here'>.
@@ -93,5 +88,8 @@ def scrape(url):
     driver.close()
 
     # append page_links to all blogs
-    print('Adding to blogs...\n')
-    blogs.append(page_links)
+    print('Adding to links...\n')
+    links.append(page_links)
+
+scrape(url)
+print(links)
