@@ -31,11 +31,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-#set random sleep function to randomize link click time
+# set random sleep function to randomize link click time
 def random_sleep(multiplier=1, verbose=False):
     """
-    Puts process to sleep for a random amount of time. Can be multiplied for testing,
-    and if verbose=True the number will be displayed.
+    This function goes between various actions to give the browser time to load and
+    prepare html for parsing.
     :multiplier: Extends time by number, default is 1
     :verbose: if True function will display how long it's sleeping
     """
@@ -52,20 +52,32 @@ def followers_to_int(text):
     :text: input text ex. '1.5m followers'
     :return: int: value ex.
     """
-    #split text
+    # split text
     text = text.split(' ')[0]
-    #if number has period or letter, splits and return rounded count
-    if text[-1] == 'm':
-        if '.' in text:
-            text = text.replace('.', '')
-        text = text[:-1] + '00000'
+    # if number has period or letter, splits and return rounded count
+    try:
+        if text[-1] == 'm':
+            if '.' in text:
+                text = text.replace('.', '')
+                text = text[:-1] + '00000'
+            else:
+                text = text.replace('m', '000000')
+            text = int(text)
+        elif text[-1] == 'k':
+            if '.' in text:
+                text = text.replace('.', '')
+                text = text[:-1] + '00'
+            else:
+                text = text = text.replace('k', '000')
+            text = int(text)
+        elif ',' in text:
+            text = text.replace(',', '')
+            text = int(text)
         text = int(text)
-    elif text[-1] == 'k':
-        text = text[:-1] + '000'
-        text = int(text)
-
-    text = int(text)
+    except (IndexError, ValueError):
+        text = 0
     return text
+
 
 def main():
     """
