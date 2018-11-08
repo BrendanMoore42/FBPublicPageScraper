@@ -5,7 +5,7 @@ date: October 17, 2018
 
 Requirements: Python 3.6+, Selenium, Numpy
 
-Returns Instagram follower/following counts from list of users
+Returns Instagram follower/following counts from list of users.
 
 *Account access and signing in
 Instagram Credentials:
