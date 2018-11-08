@@ -1,5 +1,5 @@
 ## SEO_Tools
-Collection of SEO Tools for Facebook, Instagram, Twitter
+Collection of SEO Tools for Facebook, Instagram, Google using Selenium, Pandas and Python.
 
 ### Facebook
 Extract users and comments from a single or list of public pages. Does not require token or Graph-API access. 
@@ -7,5 +7,5 @@ Extract users and comments from a single or list of public pages. Does not requi
 ### Instagram
 Extract user posts, followers and following counts.
 
-### Twitter 
-Different applications of a twitter bot.
+### Misc 
+Various SEO and other data collection tools.
