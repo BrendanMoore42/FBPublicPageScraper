@@ -1,51 +1,37 @@
-# set random sleep function to randomize link click time
-def random_sleep(multiplier=1, verbose=False):
-    """
-    This function goes between various actions to give the browser time to load and
-    prepare html for parsing.
-    :multiplier: Extends time by number, default is 1
-    :verbose: if True function will display how long it's sleeping
-    """
-    i = np.random.randint(2, 6)
-    i = i * multiplier
-    if verbose:
-        print(f'sleeping for {i} seconds')
-    time.sleep(i)
+#!/usr/bin/env
+"""
+author: @BrendanMoore42
+date: October 17, 2018
 
+Requirements: Python 3.6+, Selenium, Numpy
 
-def followers_to_int(text):
-    """
-    Splits followers and numbers
-    :text: input text ex. '1.5m followers'
-    :return: int: value ex.
-    """
-    # split text
-    text = text.split(' ')[0]
-    # if number has period or letter, splits and return rounded count
-    try:
-        if text[-1] == 'm':
-            if '.' in text:
-                text = text.replace('.', '')
-                text = text[:-1] + '00000'
-            else:
-                text = text.replace('m', '000000')
-            text = int(text)
-        elif text[-1] == 'k':
-            if '.' in text:
-                text = text.replace('.', '')
-                text = text[:-1] + '00'
-            else:
-                text = text = text.replace('k', '000')
-            text = int(text)
-        elif ',' in text:
-            text = text.replace(',', '')
-            text = int(text)
-        text = int(text)
-    except (IndexError, ValueError):
-        text = 0
-    return text
+Returns Instagram follower/following counts into a pandas dataframe
 
+*Account access and signing in
+Instagram Credentials:
+    Place username, password in same cred.py
 
+Run in Jupyter Notebook. 
+"""
+#import packages
+import sys
+import time
+import pickle
+import numpy as np
+import pandas as pd
+from cred import email, password
+#import selenium packages
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+#disable chained warnings
+pd.options.mode.chained_assignment = None 
+
+#set dataframe
+df = pd.read_json('lusbrands_20181029_part_1/messages.json')
 def get_instagram_followers(df, verbose=False):
     # set webddriver to chrome
     # can be Chrome(), Safari(), Firefox()
